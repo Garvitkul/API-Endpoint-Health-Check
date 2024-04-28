@@ -1,7 +1,7 @@
 import requests
 
 api_endpoint_url = "https://catfact.ninja/fact" #Change it to your API endpoint.
-timeout = 5
+timeout = 2
 
 #You can add your API key if your API endpoint requires the key for authentication.
 #Technically API key is not required to just check the health of the API endpoint.
