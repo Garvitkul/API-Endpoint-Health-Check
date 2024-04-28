@@ -4,11 +4,11 @@ import requests
 api_endpoint_url = "https://catfact.ninja/fact" 
 timeout = 2
 
-''''''
+"""
 You can add your API key if your API endpoint requires the key for authentication.
 Technically API key is not required to just check the health of the API endpoint.
 Api key variable can be left blank as this will send the blank header which will not affect the health monitoring.
-''''''
+"""
 api_key = "" 
 
 def check_health():
