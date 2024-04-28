@@ -13,4 +13,4 @@ The script uses the **Requests library** to send HTTP GET requests to the specif
 ## Additional Information
 
 - **Third-Party Login**: Make sure to enable third-party app login in your Google account, which you are using to send emails.
-- You can refer to [this article](https://www.geeksforgeeks.org/enabling-third-party-app-login-using-google-account/) written by me on GeeksforGeeks.
+- You can refer to [GeeksforGeeks article](https://www.geeksforgeeks.org/enabling-third-party-app-login-using-google-account/) written by me (Garvit Kulshrestha) on GeeksforGeeks.
