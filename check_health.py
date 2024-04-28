@@ -28,7 +28,9 @@ def check_health():
         else:
             send_email("API Health Check Failed", f"Endpoint returned status code {response.status_code}")
     except requests.exceptions.RequestException as e:
-        send_email("API Health Check Failed", f"Failed to connect to endpoint {api_endpoint_url}. Error: {str(e)}")
+        error_message = f"Failed to connect to endpoint {api_endpoint_url}. Error: {str(e)}"
+        print(error_message)
+        send_email("API Health Check Failed", error_message)
 
 def send_email(subject, body):
     message = f"Subject: {subject}\n\n{body}"
