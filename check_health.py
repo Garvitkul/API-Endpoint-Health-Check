@@ -25,12 +25,14 @@ def check_health():
         response = requests.get(api_endpoint_url, headers=headers, timeout=timeout)
         if response.status_code == 200:
             print("Endpoint is healthy.")
+            send_email("API Health Check Passed", f"Endpoint returned status code {response.status_code}")
         else:
             send_email("API Health Check Failed", f"Endpoint returned status code {response.status_code}")
     except requests.exceptions.RequestException as e:
         error_message = f"Failed to connect to endpoint {api_endpoint_url}. Error: {str(e)}"
         print(error_message)
         send_email("API Health Check Failed", error_message)
+
 
 def send_email(subject, body):
     message = f"Subject: {subject}\n\n{body}"
