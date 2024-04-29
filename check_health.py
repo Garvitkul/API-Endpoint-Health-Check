@@ -1,45 +1,26 @@
 import requests
-import smtplib
+import boto3
 
-"""
-You can add your API key if your API endpoint requires the key for authentication.
-Technically API key is not required to just check the health of the API endpoint.
-Api key variable can be left blank as this will send the blank header which will not affect the health monitoring.
-"""
-api_endpoint_url = "https://catfact.ninja/fact"
+api_endpoint_url = "https://catfact.ninja/facts" #Replace your API endpoint
 timeout = 2
-api_key = ""
 
-#You need to replace values of four below variables.
-sender_email = "your_sender_email@example.com"
-receiver_email = "your_receiver_email@example.com"
-smtp_username = "your_smtp_username"
-smtp_password = "your_smtp_password"
 
-smtp_server = "smtp.example.com"
-smtp_port = 587
-
-def check_health():
+def lambda_handler(event, context):
+    sns_client = boto3.client('sns', region_name="ap-south-1")
     try:
-        headers = {"x-api-key": api_key}
-        response = requests.get(api_endpoint_url, headers=headers, timeout=timeout)
+        response = requests.get(api_endpoint_url, timeout=timeout)
         if response.status_code == 200:
-            print("Endpoint is healthy.")
-            send_email("API Health Check Passed", f"Endpoint returned status code {response.status_code}")
+            message = "Endpoint is healthy."
+            print(message)
+            sns_client.publish(TopicArn="arn:aws:sns:ap-south-1:146366115606:api-health-check", Subject="API Health Check", Message=message)
         else:
-            send_email("API Health Check Failed", f"Endpoint returned status code {response.status_code}")
+            message = f"Endpoint returned status code {response.status_code}"
+            print(message)
+            sns_client.publish(TopicArn="arn:aws:sns:ap-south-1:146366115606:api-health-check", Subject="API Health Check", Message=message)            
     except requests.exceptions.RequestException as e:
-        error_message = f"Failed to connect to endpoint {api_endpoint_url}. Error: {str(e)}"
-        print(error_message)
-        send_email("API Health Check Failed", error_message)
-
-
-def send_email(subject, body):
-    message = f"Subject: {subject}\n\n{body}"
-
-    with smtplib.SMTP(smtp_server, smtp_port) as server:
-        server.starttls()
-        server.login(smtp_username, smtp_password)
-        server.sendmail(sender_email, receiver_email, message)
-
-check_health()
+        message = f"Failed to connect to endpoint {api_endpoint_url}. Error: {str(e)}"
+        print(message)
+        sns_client.publish(TopicArn="arn:aws:sns:ap-south-1:146366115606:api-health-check", Subject="API Health Check", Message=message)
+        
+        
+    
